@@ -79,14 +79,17 @@ tar -xzf sentinel.tar.gz && cd sentinel-harness-main
 
 代理域名可能变动，可依次尝试 `gh-proxy.com` / `ghfast.top` / `ghproxy.com`；站方的最新地址发布在 `ghproxy.link`。装依赖不需要 conda（anaconda channel 报 `HTTP 403 FORBIDDEN` 时无需处理，直接用任意 Python 3.10+ 解释器建 venv 即可）。
 
-**不要手动 `unset http_proxy https_proxy`**：部分云容器出公网依赖预置代理，清掉后 pip 会拿到空索引并报 `Could not find a version ... (from versions: none)`。此时先恢复代理（重开终端或 `source /root/.bashrc`）并排查：
+若 pip 报 `Could not find a version ... (from versions: none)`，含义是「从配置的 index 里一个版本都没读到」，通常是**该域名在当前容器 DNS 不可达**，而不是包不存在或 Python 版本不兼容。部分 AutoDL 容器无法解析 `pypi.tuna.tsinghua.edu.cn`（curl 报 `Resolving timed out`），但镜像预置的阿里云源可用。先查生效配置与连通性，再换用返回 200 的源：
 
 ```bash
-env | grep -iE 'proxy|^PIP'
 python -m pip config list
-curl -sS -o /dev/null -w "%{http_code}\n" https://mirrors.aliyun.com/pypi/simple/langgraph/
+for M in https://mirrors.aliyun.com/pypi/simple/ https://pypi.tuna.tsinghua.edu.cn/simple/ https://mirrors.cloud.tencent.com/pypi/simple/; do
+  curl -sS -o /dev/null -w "%{http_code}  $M\n" --max-time 10 "${M}langgraph/"
+done
 python -m pip install -r requirement.txt -i https://mirrors.aliyun.com/pypi/simple/
 ```
+
+注意 `-i` 会覆盖容器预置的 pip 配置：不要把它指向 DNS 不通的源。若预置的是 `http://` 明文源，建议显式使用 `https://` 版本。
 
 容器完全无外网时，用 Linux x86_64 + CPython 3.12 的离线 wheel 包安装：
 
