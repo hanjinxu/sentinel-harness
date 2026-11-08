@@ -77,7 +77,23 @@ curl -fL -o sentinel.tar.gz https://gh-proxy.com/https://github.com/hanjinxu/sen
 tar -xzf sentinel.tar.gz && cd sentinel-harness-main
 ```
 
-代理域名可能变动，可依次尝试 `gh-proxy.com` / `ghfast.top` / `ghproxy.com`；站方的最新地址发布在 `ghproxy.link`。装依赖走清华 PyPI 镜像即可，不需要代理，也不需要 conda：conda 的 anaconda channel 报 `HTTP 403 FORBIDDEN` 无需处理，直接用任意 Python 3.10+ 解释器建 venv 即可。
+代理域名可能变动，可依次尝试 `gh-proxy.com` / `ghfast.top` / `ghproxy.com`；站方的最新地址发布在 `ghproxy.link`。装依赖不需要 conda（anaconda channel 报 `HTTP 403 FORBIDDEN` 时无需处理，直接用任意 Python 3.10+ 解释器建 venv 即可）。
+
+**不要手动 `unset http_proxy https_proxy`**：部分云容器出公网依赖预置代理，清掉后 pip 会拿到空索引并报 `Could not find a version ... (from versions: none)`。此时先恢复代理（重开终端或 `source /root/.bashrc`）并排查：
+
+```bash
+env | grep -iE 'proxy|^PIP'
+python -m pip config list
+curl -sS -o /dev/null -w "%{http_code}\n" https://mirrors.aliyun.com/pypi/simple/langgraph/
+python -m pip install -r requirement.txt -i https://mirrors.aliyun.com/pypi/simple/
+```
+
+容器完全无外网时，用 Linux x86_64 + CPython 3.12 的离线 wheel 包安装：
+
+```bash
+tar -xzf sentinel-wheels-cp312-linux.tar.gz
+python -m pip install --no-index --find-links=./wheels -r requirement.txt
+```
 
 ### 实测结果（本机，2026-11-08）
 
