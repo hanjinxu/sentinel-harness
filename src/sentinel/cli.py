@@ -190,7 +190,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     p.add_argument("--seed", type=int, default=None)
     sub = p.add_subparsers(dest="cmd", required=True)
 
-    sub.add_parser("requirements", help="打印企业要求覆盖矩阵")
+    sub.add_parser("requirements", help="打印能力覆盖矩阵")
     q = sub.add_parser("mcp", help="导出 MCP tool schema"); q.add_argument("--out")
     sub.add_parser("demo", help="跑一条完整舆情监控链路")
     e = sub.add_parser("eval", help="运行评测套件 + CI 门禁")
