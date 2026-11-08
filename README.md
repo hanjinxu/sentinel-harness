@@ -70,7 +70,14 @@ PY="$(which python)" ./ci_gate.sh   # 脚本支持用 PY 指定解释器
 
 `./setup.sh` 默认执行 `python3 -m venv .venv`；若镜像里 `python3` 不是目标解释器，用 `PY=/path/to/python ./setup.sh` 覆盖。若同一台机器还要跑训练任务，建议为 harness 单独建环境，避免共享 `pydantic` 等传递依赖时被版本升级牵动。
 
-AutoDL 容器里 `git clone` 卡住时，先执行 `source /etc/network_turbo` 开启学术加速（仅对当前终端生效），clone 完成后 `unset http_proxy https_proxy` 再装依赖。conda 的清华 anaconda channel 报 `HTTP 403 FORBIDDEN` 无需处理——本项目不需要 conda，直接用任意 Python 3.10+ 解释器建 venv 即可。
+AutoDL 部分地区不支持学术加速（`source /etc/network_turbo` 会提示「该地区学术加速暂未支持」）。此时用第三方代理下载归档，比 `git clone` 更稳（单次 HTTPS 请求，不走 git 协议协商）：
+
+```bash
+curl -fL -o sentinel.tar.gz https://gh-proxy.com/https://github.com/hanjinxu/sentinel-harness/archive/refs/heads/main.tar.gz
+tar -xzf sentinel.tar.gz && cd sentinel-harness-main
+```
+
+代理域名可能变动，可依次尝试 `gh-proxy.com` / `ghfast.top` / `ghproxy.com`；站方的最新地址发布在 `ghproxy.link`。装依赖走清华 PyPI 镜像即可，不需要代理，也不需要 conda：conda 的 anaconda channel 报 `HTTP 403 FORBIDDEN` 无需处理，直接用任意 Python 3.10+ 解释器建 venv 即可。
 
 ### 实测结果（本机，2026-11-08）
 
