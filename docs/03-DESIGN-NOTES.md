@@ -61,7 +61,7 @@
 
 | 指标 | 实测 |
 | --- | --- |
-| Demo | 12 次工具调用、53 个 checkpoint、审批中断/恢复、Evaluator 评分 1.0、风险等级 CRITICAL |
+| Demo | 12 次工具调用、53–54 个 checkpoint、审批中断/恢复、Evaluator 评分 1.0、风险等级 CRITICAL |
 | pr_smoke | 7 trials，回归 100% / 对抗 100%，门禁 PASS |
 | nightly | 36 trials，回归/对抗/负例 100%，能力集 66.7%（刻意保留缺口） |
 | pass@k vs pass^k | CAP-004：pass@3 = 0.963，pass³ = 0.296 —— 能解 ≠ 可依赖 |

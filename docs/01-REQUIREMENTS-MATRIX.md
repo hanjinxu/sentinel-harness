@@ -29,7 +29,7 @@
 
 | ID | 能力要求 | 实现位置 | 验证方式 |
 | --- | --- | --- | --- |
-| R21 | LangGraph 工程化：StateGraph / checkpointer / interrupt / 子图 | `runtime/graph.py`, `runtime/state.py` | `cli demo` 输出 53 个 checkpoint；`tests/test_graph.py` |
+| R21 | LangGraph 工程化：StateGraph / checkpointer / interrupt / 子图 | `runtime/graph.py`, `runtime/state.py` | `cli demo` 输出 53–54 个 checkpoint；`tests/test_graph.py` |
 | R01 | 执行循环、多步编排、明确终止条件 | `runtime/graph.py` 条件边 | `cli demo` stop_reason；`tests/test_graph.py::test_budget_stop` |
 | R02 | 工具注册、参数 Schema、结构化输出、MCP | `tools/registry.py` | `cli mcp`；`tests/test_tools.py::test_schema_validation` |
 | R03 | 沙箱、最小权限、权限校验与审计 | `tools/sandbox.py` | `tests/test_guard.py::test_least_privilege` |

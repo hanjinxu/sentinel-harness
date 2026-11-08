@@ -135,6 +135,7 @@ evaluation.keys_visible_to_evaluator = ['brief', 'rubric']
 | 模型输出 | `ScriptedPolicy` 确定性 / `ReplaySource` 回放录制响应 |
 | 随机源 | `DeterministicIds(seed)`、`FaultInjector.rng = random.Random(seed)` |
 | 配置漂移 | `HarnessConfig.fingerprint()` 写进 trace 与评测报告 |
+| 跨机差异 | 指纹包含 `workspace_root` 绝对路径，同机同配置严格可复现；跨机器 `config_fingerprint` / `run_id` 不同 |
 | 环境共享 | 每 trial 新建 `Runtime` + 新 `InMemorySaver` + 独立信源视图 |
 | 时间 | `Tracer` 注入式 clock；预算墙钟使用 `time.monotonic` |
 

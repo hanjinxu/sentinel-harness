@@ -102,7 +102,7 @@ python -m pip install --no-index --find-links=./wheels -r requirement.txt
 
 | 项目 | 结果 |
 | --- | --- |
-| Demo | 12 次工具调用、53 个 checkpoint、HITL 审批被人工拒绝、Evaluator 评分 1.0、风险等级 CRITICAL |
+| Demo | 12 次工具调用、53–54 个 checkpoint（Python 3.13 本机 53 / 3.12 容器 54，随运行时小版本浮动）、HITL 审批被人工拒绝、Evaluator 评分 1.0、风险等级 CRITICAL |
 | pr_smoke | 7 trials，回归/对抗通过率 100%，CI 门禁 PASS |
 | nightly | 36 trials，总体 90% 左右；回归/对抗/负例 100%，能力集暴露真实缺口；**CAP-004 pass@3=0.963 而 pass³=0.296** |
 | replay | 录制 13 个 LLM 决策，回放后工具序列与 stop_reason 完全一致，`DETERMINISTIC=True` |
