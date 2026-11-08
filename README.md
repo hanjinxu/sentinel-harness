@@ -70,6 +70,8 @@ PY="$(which python)" ./ci_gate.sh   # 脚本支持用 PY 指定解释器
 
 `./setup.sh` 默认执行 `python3 -m venv .venv`；若镜像里 `python3` 不是目标解释器，用 `PY=/path/to/python ./setup.sh` 覆盖。若同一台机器还要跑训练任务，建议为 harness 单独建环境，避免共享 `pydantic` 等传递依赖时被版本升级牵动。
 
+AutoDL 容器里 `git clone` 卡住时，先执行 `source /etc/network_turbo` 开启学术加速（仅对当前终端生效），clone 完成后 `unset http_proxy https_proxy` 再装依赖。conda 的清华 anaconda channel 报 `HTTP 403 FORBIDDEN` 无需处理——本项目不需要 conda，直接用任意 Python 3.10+ 解释器建 venv 即可。
+
 ### 实测结果（本机，2026-11-08）
 
 | 项目 | 结果 |
