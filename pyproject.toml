@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sentinel-harness"
+version = "1.0.0"
+description = "Production-grade Agent Harness for external public-opinion monitoring (LangGraph)"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.11"
+dependencies = [
+  "langgraph>=1.0,<2",
+  "langchain-core>=1.0",
+]
+
+[project.scripts]
+sentinel = "sentinel.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["sentinel*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

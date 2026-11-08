@@ -1,0 +1,5 @@
+# 本项目除 LangGraph 外零第三方依赖；评测与模型网关均可离线运行。
+# 国内安装建议：pip install -r requirement.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+# 或执行 ./setup.sh（内置清华源与离线自检）
+langgraph>=1.0,<2
+langchain-core>=1.0

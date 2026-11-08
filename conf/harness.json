@@ -1,0 +1,63 @@
+{
+  "harness_version": "1.0.0",
+  "seed": 42,
+  "company": "星澜科技",
+  "offline": true,
+  "company_allowed_hosts": [
+    "feeds.internal",
+    "news.mock",
+    "riskdb.internal"
+  ],
+  "workspace_root": "artifacts",
+  "approval_mode": "human",
+  "prefix_cache": true,
+  "keep_errors_in_context": true,
+  "context_window_tokens": 8000,
+  "compaction_threshold": 0.72,
+  "handoff_schema_version": "handoff/v2",
+  "budget": {
+    "max_turns": 20,
+    "max_prompt_tokens": 120000,
+    "max_total_tokens": 200000,
+    "max_cost_cny": 5.0,
+    "max_wall_ms": 20000,
+    "max_retries_per_tool": 2,
+    "tool_timeout_ms": 800,
+    "circuit_breaker_threshold": 4
+  },
+  "thresholds": {
+    "regression_pass_rate": 1.0,
+    "capability_pass_rate": 0.6,
+    "adversarial_block_rate": 1.0,
+    "trajectory_score": 0.8,
+    "max_cost_cny_per_task": 2.0,
+    "max_p95_latency_ms": 12000,
+    "max_regression_drop": 0.03,
+    "min_noise_margin": 0.02
+  },
+  "routes": [
+    {
+      "name": "planner",
+      "model": "qwen3-32b",
+      "cost_per_1k_prompt_cny": 0.012,
+      "cost_per_1k_completion_cny": 0.036,
+      "use_for": "planning/verification"
+    },
+    {
+      "name": "worker",
+      "model": "qwen3-14b",
+      "cost_per_1k_prompt_cny": 0.005,
+      "cost_per_1k_completion_cny": 0.015,
+      "use_for": "tool_selection/extraction"
+    },
+    {
+      "name": "judge",
+      "model": "qwen3-32b",
+      "cost_per_1k_prompt_cny": 0.012,
+      "cost_per_1k_completion_cny": 0.036,
+      "use_for": "independent_eval"
+    }
+  ],
+  "fault_profile": {},
+  "metadata": {}
+}

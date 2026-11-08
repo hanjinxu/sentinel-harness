@@ -1,0 +1,19 @@
+{
+  "description": "分层评测套件：PR 只跑冒烟，夜间跑核心，模型/拓扑大改才跑全量。修改本文件即改变门禁覆盖范围。",
+  "pr_smoke": {
+    "categories": ["regression", "adversarial"],
+    "k": 1,
+    "budget_cny": 5.0
+  },
+  "nightly": {
+    "categories": ["regression", "capability", "adversarial", "negative"],
+    "k": 3,
+    "budget_cny": 60.0
+  },
+  "full": {
+    "categories": ["regression", "capability", "adversarial", "negative"],
+    "k": 5,
+    "budget_cny": 200.0,
+    "include_held_out": true
+  }
+}
