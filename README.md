@@ -2,7 +2,7 @@
 
 > 一个把「能跑的 Agent」变成「可交付的 Agent 系统」的工程骨架。
 > 业务：监控外部舆情，判定其对本公司的潜在影响，产出带证据链的结构化影响简报。
-> 编排框架：**LangGraph 1.2.11**（StateGraph / checkpointer / interrupt / 子图）。
+> 编排框架：**LangGraph 1.x**（StateGraph / checkpointer / interrupt / 子图；本机实测 1.2.20）。
 
 ---
 
@@ -28,7 +28,7 @@ Harness 不是 Agent 本身，而是**包在模型外面的确定性控制系统
 
 ## 快速开始
 
-环境：Python 3.13 + LangGraph 1.2.11。无 API Key、无网络依赖，全部离线可跑。所有命令都从项目根目录执行，统一入口是 `main.py`。依赖由 `./setup.sh` 装进项目内的 `.venv`。
+环境：**Python 3.10+**（本机实测 3.13.12）+ LangGraph 1.x。依赖仅 `langgraph` 与 `langchain-core`，**不依赖 PyTorch / CUDA，不需要 GPU**。无 API Key、无网络依赖，全部离线可跑。所有命令都从项目根目录执行，统一入口是 `main.py`。依赖由 `./setup.sh` 装进项目内的 `.venv`。
 
 ```bash
 git clone https://github.com/hanjinxu/sentinel-harness.git
@@ -50,6 +50,25 @@ python -m unittest discover -s tests -v
 ```
 
 也可以直接用根目录下的 `./demo.sh`、`./ci_gate.sh`，或 `make demo` / `make ci` / `make nightly` / `make test`。自定义配置用 `python main.py --config conf/harness.json demo`。
+
+### 运行环境（容器 / AutoDL / conda）
+
+| 约束 | 结论 |
+| --- | --- |
+| Python | 3.10+；源码只用通用标准库，3.11 / 3.12 / 3.13 均可 |
+| PyTorch / CUDA | 完全不 import，版本任意，GPU 非必需 |
+| 第三方依赖 | 仅 `langgraph`、`langchain-core` 及其传递依赖（`pydantic`、`xxhash` 等） |
+
+已有 conda 环境时不必再建 `.venv`：
+
+```bash
+conda activate <your-env>        # 或任意 Python 3.10+ 解释器
+pip install -r requirement.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+python main.py demo
+PY="$(which python)" ./ci_gate.sh   # 脚本支持用 PY 指定解释器
+```
+
+`./setup.sh` 默认执行 `python3 -m venv .venv`；若镜像里 `python3` 不是目标解释器，用 `PY=/path/to/python ./setup.sh` 覆盖。若同一台机器还要跑训练任务，建议为 harness 单独建环境，避免共享 `pydantic` 等传递依赖时被版本升级牵动。
 
 ### 实测结果（本机，2026-11-08）
 
